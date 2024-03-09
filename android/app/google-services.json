@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "244159033050",
+    "project_id": "clean-architecture-auth",
+    "storage_bucket": "clean-architecture-auth.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:244159033050:android:623ab0b6ab675a53e17fe3",
+        "android_client_info": {
+          "package_name": "com.brprogrammer.clean_architecture_with_riverpod"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDh-vRu0MS1SIw6_JDtrJODlqmikoUsTxw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
