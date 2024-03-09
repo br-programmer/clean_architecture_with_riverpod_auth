@@ -1,7 +1,9 @@
-import 'package:clean_architecture_with_riverpod/extensions/extensions.dart';
-import 'package:clean_architecture_with_riverpod/screens/screens.dart';
-import 'package:clean_architecture_with_riverpod/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+
+import '../extensions/extensions.dart';
+import '../extensions/num_x.dart';
+import '../widgets/widgets.dart';
+import 'screens.dart';
 
 class AuthScreen extends StatelessWidget {
   const AuthScreen({super.key});
@@ -27,13 +29,13 @@ class AuthScreen extends StatelessWidget {
                     },
                     text: 'Login',
                   ),
-                  const SizedBox(height: 8),
+                  8.h,
                   CustomButton(
                     onPressed: () {
                       context.pushReplacementNamed(RegisterScreen.route);
                     },
                     text: 'Signup',
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    backgroundColor: context.theme.scaffoldBackgroundColor,
                   ),
                 ],
               ),
@@ -57,11 +59,11 @@ class _Header extends StatelessWidget {
           'By Flutter Dev, To Flutter Dev',
           style: TextStyle(
             fontSize: 14,
-            color: Theme.of(context).colorScheme.primary,
+            color: context.colorScheme.primary,
             fontWeight: FontWeight.w600,
           ),
         ),
-        const SizedBox(height: 10),
+        10.h,
         const Text(
           'The Flutter Community',
           style: TextStyle(
@@ -71,9 +73,9 @@ class _Header extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        const SizedBox(height: 60),
+        60.h,
         Image.asset('assets/images/onboarding.png'),
-        const SizedBox(height: 68),
+        68.h,
       ],
     );
   }
