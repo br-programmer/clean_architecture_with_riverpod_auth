@@ -1,6 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+import '../extensions/extensions.dart';
+
 class CustomRichText extends StatelessWidget {
   const CustomRichText({
     super.key,
@@ -27,7 +29,7 @@ class CustomRichText extends StatelessWidget {
             text: secondaryText,
             style: TextStyle(
               fontWeight: FontWeight.w700,
-              color: Theme.of(context).colorScheme.primary,
+              color: context.colorScheme.primary,
             ),
             recognizer: TapGestureRecognizer()..onTap = onTap,
           ),
