@@ -1,4 +1,4 @@
-include: package:very_good_analysis/analysis_options.yaml
+include: package:flutter_lints/flutter.yaml
 
 linter:
   rules:
@@ -19,6 +19,7 @@ linter:
     use_late_for_private_fields_and_variables: false
     one_member_abstracts: false
     prefer_constructors_over_static_methods: false
+    prefer_relative_imports: true
 
 analyzer:
   errors:
