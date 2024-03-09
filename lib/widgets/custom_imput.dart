@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../extensions/extensions.dart';
+
 class CustomImput extends StatefulWidget {
   const CustomImput.email({
     super.key,
@@ -81,7 +83,7 @@ class _CustomImputState extends State<CustomImput> {
           enabledBorder: _inputBorder(),
           errorBorder: _inputBorder(borderColor: Colors.red),
           focusedErrorBorder: _inputBorder(borderColor: Colors.red),
-          fillColor: Theme.of(context).colorScheme.secondary,
+          fillColor: context.colorScheme.secondary,
           filled: true,
           hintText: widget.hint,
           hintStyle: const TextStyle(
