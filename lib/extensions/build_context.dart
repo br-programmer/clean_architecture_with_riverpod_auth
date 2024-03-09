@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-extension BuilContextX on BuildContext {
+extension NavigatorX on BuildContext {
   NavigatorState get _navigator => Navigator.of(this);
 
   Future<T?> pushNamed<T extends Object?>(String routeName) {
@@ -21,4 +21,9 @@ extension BuilContextX on BuildContext {
   void pop<T extends Object?>([T? result]) {
     return _navigator.pop(result);
   }
+}
+
+extension ThemeX on BuildContext {
+  ThemeData get theme => Theme.of(this);
+  ColorScheme get colorScheme => theme.colorScheme;
 }
