@@ -1,7 +1,7 @@
 import 'package:clean_architecture_with_riverpod/extensions/extensions.dart';
+import 'package:clean_architecture_with_riverpod/screens/screens.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import 'auth_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -17,7 +17,11 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     Future<void>.delayed(
       const Duration(seconds: 3),
-      () => context.pushReplacementNamed(AuthScreen.route),
+      () {
+        final user = FirebaseAuth.instance.currentUser;
+        final route = user != null ? HomeScreen.route : AuthScreen.route;
+        context.pushReplacementNamed(route);
+      },
     );
     super.initState();
   }
