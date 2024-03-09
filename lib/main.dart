@@ -1,7 +1,8 @@
-import 'package:clean_architecture_with_riverpod/firebase_options.dart';
-import 'package:clean_architecture_with_riverpod/screens/screens.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
+import 'firebase_options.dart';
+import 'screens/screens.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
