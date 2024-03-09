@@ -1,12 +1,40 @@
+import 'dart:developer';
+
 import 'package:clean_architecture_with_riverpod/extensions/extensions.dart';
 import 'package:clean_architecture_with_riverpod/screens/screens.dart';
 import 'package:clean_architecture_with_riverpod/widgets/widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   static String get route => '/login';
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  var email = '';
+  var password = '';
+
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+  Future<void> _login() async {
+    try {
+      final credentials = await _firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      final user = credentials.user;
+      if (user != null) {
+        context.pushReplacementNamed(HomeScreen.route);
+      }
+    } catch (_) {
+      log(_.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,15 +58,17 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                   separator,
-                  const CustomImput.email(),
+                  CustomImput.email(
+                    onChanged: (value) => setState(() => email = value),
+                  ),
                   separator,
-                  const CustomImput.password(),
+                  CustomImput.password(
+                    onChanged: (value) => setState(() => password = value),
+                  ),
                   separator,
                   CustomButton(
                     text: 'Login',
-                    onPressed: () {
-                      context.pushReplacementNamed(HomeScreen.route);
-                    },
+                    onPressed: _login,
                   ),
                   separator,
                   separator,
