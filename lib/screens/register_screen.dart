@@ -1,12 +1,40 @@
+import 'dart:developer';
+
 import 'package:clean_architecture_with_riverpod/extensions/extensions.dart';
 import 'package:clean_architecture_with_riverpod/screens/screens.dart';
 import 'package:clean_architecture_with_riverpod/widgets/widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
   static String get route => '/register';
+
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  var email = '';
+  var password = '';
+
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+  Future<void> _signUp() async {
+    try {
+      final credentials = await _firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      final user = credentials.user;
+      if (user != null) {
+        context.pushNamed(HomeScreen.route);
+      }
+    } catch (_) {
+      log(_.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,18 +58,20 @@ class RegisterScreen extends StatelessWidget {
                     ),
                   ),
                   separator,
-                  const CustomImput.email(),
+                  CustomImput.email(
+                    onChanged: (value) => setState(() => email = value),
+                  ),
                   separator,
-                  const CustomImput.password(),
+                  CustomImput.password(
+                    onChanged: (value) => setState(() => password = value),
+                  ),
                   separator,
                   const CustomImput.password(
                     hint: 'Confirm Password',
                   ),
                   separator,
                   CustomButton(
-                    onPressed: () {
-                      context.pushReplacementNamed(HomeScreen.route);
-                    },
+                    onPressed: _signUp,
                     text: 'Signup',
                   ),
                   separator,
