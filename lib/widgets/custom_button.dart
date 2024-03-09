@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../extensions/extensions.dart';
+
 class CustomButton extends StatelessWidget {
   const CustomButton({
     super.key,
@@ -15,7 +17,7 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final colorScheme = context.colorScheme;
     final backgroundColor = this.backgroundColor ?? colorScheme.primary;
     final foregroundColor = this.foregroundColor ?? colorScheme.onPrimary;
     return ElevatedButton(
