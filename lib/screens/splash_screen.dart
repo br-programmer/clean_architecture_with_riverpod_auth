@@ -1,7 +1,8 @@
-import 'package:clean_architecture_with_riverpod/extensions/extensions.dart';
-import 'package:clean_architecture_with_riverpod/screens/screens.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../extensions/extensions.dart';
+import 'screens.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
