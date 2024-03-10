@@ -8,7 +8,7 @@ import 'screens.dart';
 class AuthScreen extends StatelessWidget {
   const AuthScreen({super.key});
 
-  static String get route => '/auth';
+  static const String route = '/auth';
 
   @override
   Widget build(BuildContext context) {
