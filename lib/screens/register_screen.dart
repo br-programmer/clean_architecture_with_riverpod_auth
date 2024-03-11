@@ -1,10 +1,9 @@
-import 'dart:developer';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../dialogs/dialogs.dart';
 import '../extensions/extensions.dart';
-import '../extensions/num_x.dart';
+import '../services/services.dart';
+import '../validators/validators.dart';
 import '../widgets/widgets.dart';
 import 'screens.dart';
 
@@ -18,23 +17,31 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  late final formKey = GlobalKey<FormState>();
+  final firebaseService = FirebaseService.instance;
+
   var email = '';
   var password = '';
 
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-
   Future<void> _signUp() async {
-    try {
-      final credentials = await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
+    if (formKey.currentState!.validate()) {
+      final failure = await showBlurry(
+        context,
+        firebaseService.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        ),
       );
-      final user = credentials.user;
-      if (user != null) {
-        context.pushNamed(HomeScreen.route);
+      if (failure != null) {
+        final errorData = failure.errorData;
+        CustomDialog.show(
+          context,
+          title: errorData.message,
+          icon: errorData.icon,
+        );
+        return;
       }
-    } catch (_) {
-      log(_.toString());
+      context.pushReplacementNamed(HomeScreen.route);
     }
   }
 
@@ -47,45 +54,54 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    'Signup',
-                    style: TextStyle(
-                      color: colorScheme.primary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
+            child: Form(
+              key: formKey,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      'Signup',
+                      style: TextStyle(
+                        color: colorScheme.primary,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                      ),
                     ),
-                  ),
-                  separator,
-                  CustomImput.email(
-                    onChanged: (value) => setState(() => email = value),
-                  ),
-                  separator,
-                  CustomImput.password(
-                    onChanged: (value) => setState(() => password = value),
-                  ),
-                  separator,
-                  const CustomImput.password(
-                    hint: 'Confirm Password',
-                  ),
-                  separator,
-                  CustomButton(
-                    onPressed: _signUp,
-                    text: 'Signup',
-                  ),
-                  separator,
-                  separator,
-                  CustomRichText(
-                    firstText: 'Already have an Account?',
-                    secondaryText: 'Login',
-                    onTap: () {
-                      context.pushReplacementNamed(LoginScreen.route);
-                    },
-                  ),
-                ],
+                    separator,
+                    CustomImput.email(
+                      onChanged: (value) => setState(() => email = value),
+                      validator: FormValidator.email,
+                    ),
+                    separator,
+                    CustomImput.password(
+                      onChanged: (value) => setState(() => password = value),
+                      validator: FormValidator.password,
+                    ),
+                    separator,
+                    CustomImput.password(
+                      hint: 'Confirm Password',
+                      validator: (value) => FormValidator.confirmPassword(
+                        value,
+                        password,
+                      ),
+                    ),
+                    separator,
+                    CustomButton(
+                      onPressed: _signUp,
+                      text: 'Signup',
+                    ),
+                    separator,
+                    separator,
+                    CustomRichText(
+                      firstText: 'Already have an Account?',
+                      secondaryText: 'Login',
+                      onTap: () {
+                        context.pushReplacementNamed(LoginScreen.route);
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
