@@ -5,8 +5,7 @@ import '../failures/failures.dart';
 class FirebaseService {
   FirebaseService._();
 
-  static final FirebaseService _instance = FirebaseService._();
-  static final FirebaseService instance = _instance;
+  static final FirebaseService instance = FirebaseService._();
 
   final _firebaseAuth = FirebaseAuth.instance;
 
