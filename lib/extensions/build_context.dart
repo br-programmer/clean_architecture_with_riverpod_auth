@@ -11,9 +11,9 @@ extension NavigatorX on BuildContext {
     return _navigator.pushReplacementNamed(routeName);
   }
 
-  Future<T?> pushAndRemoveUntil<T extends Object?>(Route<T> newRoute) {
-    return _navigator.pushAndRemoveUntil(
-      newRoute,
+  Future<T?> pushAndRemoveUntil<T extends Object?>(String routeName) {
+    return _navigator.pushNamedAndRemoveUntil(
+      routeName,
       (route) => false,
     );
   }
@@ -26,4 +26,11 @@ extension NavigatorX on BuildContext {
 extension ThemeX on BuildContext {
   ThemeData get theme => Theme.of(this);
   ColorScheme get colorScheme => theme.colorScheme;
+}
+
+extension MediaQueryX on BuildContext {
+  MediaQueryData get mediaQuery => MediaQuery.of(this);
+  Size get size => mediaQuery.size;
+  double get width => size.width;
+  double get height => size.height;
 }
