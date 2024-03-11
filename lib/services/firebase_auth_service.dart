@@ -25,6 +25,7 @@ class FirebaseService {
       return null;
     } on FirebaseAuthException catch (e) {
       return switch (e.code) {
+        'network-request-failed' => NetworkFailure(),
         'user-not-found' => UserNotFoundFailure(),
         'invalid-email' => InvalidEmailFailure(),
         'invalid-credential' || 'wrong-password' => InvalidCredentialsFailure(),
@@ -51,6 +52,7 @@ class FirebaseService {
       return null;
     } on FirebaseAuthException catch (e) {
       return switch (e.code) {
+        'network-request-failed' => NetworkFailure(),
         'email-already-in-use' => EmailExistFailure(),
         'invalid-email' => InvalidEmailFailure(),
         'weak-password' => WeakPasswordFailure(),
