@@ -25,25 +25,32 @@ class _LoginScreenState extends State<LoginScreen> {
   var password = '';
 
   Future<void> _singIn() async {
-    if (formKey.currentState!.validate()) {
-      final failure = await showBlurry(
-        context,
-        firebaseService.signInWithEmailAndPassword(
-          email: email,
-          password: password,
-        ),
-      );
-      if (failure != null) {
-        final errorData = failure.errorData;
-        CustomDialog.show(
-          context,
-          title: errorData.message,
-          icon: errorData.icon,
-        );
-        return;
-      }
-      context.pushReplacementNamed(HomeScreen.route);
+    if (!formKey.currentState!.validate()) {
+      return;
     }
+    final failure = await showBlurry(
+      context,
+      firebaseService.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      ),
+    );
+
+    if (!mounted) {
+      return;
+    }
+
+    if (failure != null) {
+      final errorData = failure.errorData;
+      CustomDialog.show(
+        context,
+        title: errorData.message,
+        icon: errorData.icon,
+      );
+      return;
+    }
+
+    context.pushReplacementNamed(HomeScreen.route);
   }
 
   @override
@@ -71,12 +78,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     separator,
                     CustomImput.email(
-                      onChanged: (value) => setState(() => email = value),
+                      onChanged: (value) => setState(
+                        () => email = value.trim(),
+                      ),
                       validator: FormValidator.email,
                     ),
                     separator,
                     CustomImput.password(
-                      onChanged: (value) => setState(() => password = value),
+                      onChanged: (value) => setState(
+                        () => password = value.trim(),
+                      ),
                       validator: FormValidator.password,
                     ),
                     separator,

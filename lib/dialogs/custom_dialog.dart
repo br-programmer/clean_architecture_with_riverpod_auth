@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../extensions/extensions.dart';
 import '../widgets/widgets.dart';
 
-Future<T?> showBlurry<T>(BuildContext context, Future<T> future) async {
+Future<T> showBlurry<T>(BuildContext context, Future<T> future) async {
   CustomDialog.blurry(context);
   final result = await future;
   if (context.mounted) {
