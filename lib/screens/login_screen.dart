@@ -1,10 +1,9 @@
-import 'dart:developer';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../dialogs/custom_dialog.dart';
 import '../extensions/extensions.dart';
-import '../extensions/num_x.dart';
+import '../services/firebase_auth_service.dart';
+import '../validators/validators.dart';
 import '../widgets/widgets.dart';
 import 'screens.dart';
 
@@ -18,23 +17,32 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  late final formKey = GlobalKey<FormState>();
+
+  final firebaseService = FirebaseService.instance;
+
   var email = '';
   var password = '';
 
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-
-  Future<void> _login() async {
-    try {
-      final credentials = await _firebaseAuth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
+  Future<void> _singIn() async {
+    if (formKey.currentState!.validate()) {
+      final failure = await showBlurry(
+        context,
+        firebaseService.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        ),
       );
-      final user = credentials.user;
-      if (user != null) {
-        context.pushReplacementNamed(HomeScreen.route);
+      if (failure != null) {
+        final errorData = failure.errorData;
+        CustomDialog.show(
+          context,
+          title: errorData.message,
+          icon: errorData.icon,
+        );
+        return;
       }
-    } catch (_) {
-      log(_.toString());
+      context.pushReplacementNamed(HomeScreen.route);
     }
   }
 
@@ -47,41 +55,46 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    'Login',
-                    style: TextStyle(
-                      color: colorScheme.primary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
+            child: Form(
+              key: formKey,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      'Login',
+                      style: TextStyle(
+                        color: colorScheme.primary,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                      ),
                     ),
-                  ),
-                  separator,
-                  CustomImput.email(
-                    onChanged: (value) => setState(() => email = value),
-                  ),
-                  separator,
-                  CustomImput.password(
-                    onChanged: (value) => setState(() => password = value),
-                  ),
-                  separator,
-                  CustomButton(
-                    text: 'Login',
-                    onPressed: _login,
-                  ),
-                  separator,
-                  separator,
-                  CustomRichText(
-                    firstText: 'Don’t have an Account?',
-                    secondaryText: 'Signup',
-                    onTap: () {
-                      context.pushReplacementNamed(RegisterScreen.route);
-                    },
-                  ),
-                ],
+                    separator,
+                    CustomImput.email(
+                      onChanged: (value) => setState(() => email = value),
+                      validator: FormValidator.email,
+                    ),
+                    separator,
+                    CustomImput.password(
+                      onChanged: (value) => setState(() => password = value),
+                      validator: FormValidator.password,
+                    ),
+                    separator,
+                    CustomButton(
+                      text: 'Login',
+                      onPressed: _singIn,
+                    ),
+                    separator,
+                    separator,
+                    CustomRichText(
+                      firstText: 'Don’t have an Account?',
+                      secondaryText: 'Signup',
+                      onTap: () {
+                        context.pushReplacementNamed(RegisterScreen.route);
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
