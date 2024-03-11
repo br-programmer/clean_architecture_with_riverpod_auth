@@ -24,25 +24,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
   var password = '';
 
   Future<void> _signUp() async {
-    if (formKey.currentState!.validate()) {
-      final failure = await showBlurry(
-        context,
-        firebaseService.createUserWithEmailAndPassword(
-          email: email,
-          password: password,
-        ),
-      );
-      if (failure != null) {
-        final errorData = failure.errorData;
-        CustomDialog.show(
-          context,
-          title: errorData.message,
-          icon: errorData.icon,
-        );
-        return;
-      }
-      context.pushReplacementNamed(HomeScreen.route);
+    if (!formKey.currentState!.validate()) {
+      return;
     }
+    final failure = await showBlurry(
+      context,
+      firebaseService.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      ),
+    );
+    if (!mounted) {
+      return;
+    }
+    if (failure != null) {
+      final errorData = failure.errorData;
+      CustomDialog.show(
+        context,
+        title: errorData.message,
+        icon: errorData.icon,
+      );
+      return;
+    }
+    context.pushReplacementNamed(HomeScreen.route);
   }
 
   @override

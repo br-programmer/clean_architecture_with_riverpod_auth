@@ -39,7 +39,6 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!mounted) {
       return;
     }
-
     if (failure != null) {
       final errorData = failure.errorData;
       CustomDialog.show(
@@ -49,7 +48,6 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       return;
     }
-
     context.pushReplacementNamed(HomeScreen.route);
   }
 
