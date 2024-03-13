@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 
-import '../dialogs/custom_dialog.dart';
+import '../dialogs/dialogs.dart';
 import '../extensions/extensions.dart';
 import '../services/firebase_auth_service.dart';
 import '../validators/validators.dart';
 import '../widgets/widgets.dart';
 import 'screens.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignInScreen extends StatefulWidget {
+  const SignInScreen({super.key});
 
-  static const String route = '/login';
+  static const String route = '/sign_in';
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignInScreenState extends State<SignInScreen> {
   late final formKey = GlobalKey<FormState>();
 
   final firebaseService = FirebaseService.instance;
@@ -24,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
   var email = '';
   var password = '';
 
-  Future<void> _singIn() async {
+  Future<void> signIn() async {
     if (!formKey.currentState!.validate()) {
       return;
     }
@@ -41,20 +41,20 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     if (failure != null) {
       final errorData = failure.errorData;
-      CustomDialog.show(
+      FlutterMastersDialog.show(
         context,
         title: errorData.message,
         icon: errorData.icon,
       );
       return;
     }
-    context.pushReplacementNamed(HomeScreen.route);
+    context.pushAndRemoveUntil(HomeScreen.route);
   }
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = context.colorScheme;
-    final separator = 28.h;
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -67,40 +67,49 @@ class _LoginScreenState extends State<LoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(
-                      'Login',
+                      'Sign In',
                       style: TextStyle(
                         color: colorScheme.primary,
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
                       ),
                     ),
-                    separator,
-                    CustomImput.email(
+                    const SizedBox(height: 28),
+                    TextFormField(
+                      validator: FormValidator.email,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                        hintText: 'Your email here',
+                        prefixIcon: Icon(Icons.email_outlined),
+                      ),
                       onChanged: (value) => setState(
                         () => email = value.trim(),
                       ),
-                      validator: FormValidator.email,
                     ),
-                    separator,
-                    CustomImput.password(
+                    const SizedBox(height: 28),
+                    TextFormField(
+                      validator: FormValidator.password,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      keyboardType: TextInputType.visiblePassword,
+                      decoration: const InputDecoration(
+                        hintText: 'Your password here',
+                        prefixIcon: Icon(Icons.lock_outline_rounded),
+                      ),
                       onChanged: (value) => setState(
                         () => password = value.trim(),
                       ),
-                      validator: FormValidator.password,
                     ),
-                    separator,
-                    CustomButton(
-                      text: 'Login',
-                      onPressed: _singIn,
+                    const SizedBox(height: 28),
+                    ElevatedButton(
+                      onPressed: signIn,
+                      child: const Text('Sign In'),
                     ),
-                    separator,
-                    separator,
-                    CustomRichText(
-                      firstText: 'Don’t have an Account?',
-                      secondaryText: 'Signup',
-                      onTap: () {
-                        context.pushReplacementNamed(RegisterScreen.route);
-                      },
+                    const SizedBox(height: 56),
+                    FlutterMastersRichText(
+                      text: 'Don’t have an Account?',
+                      secondaryText: 'Sign Up',
+                      onTap: () => context.pushNamed(SignUpScreen.route),
                     ),
                   ],
                 ),
