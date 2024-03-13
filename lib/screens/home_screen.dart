@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../extensions/extensions.dart';
 import '../services/firebase_auth_service.dart';
-import '../widgets/widgets.dart';
 import 'screens.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -19,11 +18,11 @@ class HomeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CustomButton(
+            ElevatedButton(
               onPressed: () => FirebaseService.instance.logout().whenComplete(
                     () => context.pushAndRemoveUntil(AuthScreen.route),
                   ),
-              text: 'Logout',
+              child: const Text('Logout'),
             ),
           ],
         ),
