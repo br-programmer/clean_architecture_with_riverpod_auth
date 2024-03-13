@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../extensions/extensions.dart';
-import '../widgets/widgets.dart';
 import 'screens.dart';
 
 class AuthScreen extends StatelessWidget {
@@ -22,19 +21,17 @@ class AuthScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const _Header(),
-                  CustomButton(
-                    onPressed: () {
-                      context.pushReplacementNamed(LoginScreen.route);
-                    },
-                    text: 'Login',
+                  ElevatedButton(
+                    onPressed: () => context.pushNamed(SignInScreen.route),
+                    child: const Text('Sign In'),
                   ),
-                  8.h,
-                  CustomButton(
-                    onPressed: () {
-                      context.pushReplacementNamed(RegisterScreen.route);
-                    },
-                    text: 'Signup',
-                    backgroundColor: context.theme.scaffoldBackgroundColor,
+                  const SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: () => context.pushNamed(SignInScreen.route),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: context.theme.scaffoldBackgroundColor,
+                    ),
+                    child: const Text('Sign Up'),
                   ),
                 ],
               ),
@@ -62,7 +59,7 @@ class _Header extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
-        10.h,
+        const SizedBox(height: 8),
         const Text(
           'The Flutter Community',
           style: TextStyle(
@@ -72,9 +69,9 @@ class _Header extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        60.h,
+        const SizedBox(height: 60),
         Image.asset('assets/images/onboarding.png'),
-        68.h,
+        const SizedBox(height: 68),
       ],
     );
   }
