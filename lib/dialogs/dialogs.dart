@@ -1,1 +1,1 @@
-export 'custom_dialog.dart';
+export 'flutter_masters_dialog.dart';

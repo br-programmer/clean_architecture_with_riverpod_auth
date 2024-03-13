@@ -3,19 +3,18 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import '../extensions/extensions.dart';
-import '../widgets/widgets.dart';
 
 Future<T> showBlurry<T>(BuildContext context, Future<T> future) async {
-  CustomDialog.blurry(context);
+  FlutterMastersDialog.blurry(context);
   final result = await future;
   if (context.mounted) {
-    CustomDialog.hide(context);
+    FlutterMastersDialog.hide(context);
   }
   return result;
 }
 
-class CustomDialog extends StatelessWidget {
-  const CustomDialog._({
+class FlutterMastersDialog extends StatelessWidget {
+  const FlutterMastersDialog._({
     required this.title,
     required this.icon,
   });
@@ -41,7 +40,7 @@ class CustomDialog extends StatelessWidget {
   }) {
     return showDialog(
       context: context,
-      builder: (_) => CustomDialog._(title: title, icon: icon),
+      builder: (_) => FlutterMastersDialog._(title: title, icon: icon),
     );
   }
 
@@ -65,7 +64,7 @@ class CustomDialog extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(icon, size: 40),
-                  4.h,
+                  const SizedBox(height: 4),
                   Text(
                     title,
                     textAlign: TextAlign.center,
@@ -75,10 +74,10 @@ class CustomDialog extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-                  8.h,
-                  CustomButton(
-                    onPressed: () => CustomDialog.hide(context),
-                    text: 'OK',
+                  const SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: () => FlutterMastersDialog.hide(context),
+                    child: const Text('OK'),
                   ),
                 ],
               ),
