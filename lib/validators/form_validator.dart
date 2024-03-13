@@ -1,6 +1,16 @@
 class FormValidator {
   const FormValidator._();
 
+  static String? userName(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Username is required.';
+    }
+    if (value.length < 4) {
+      return 'The username is short.';
+    }
+    return null;
+  }
+
   static String? email(String? value) {
     if (value == null || value.isEmpty) {
       return 'Email is required.';
@@ -22,7 +32,10 @@ class FormValidator {
   }
 
   static String? confirmPassword(String? value, String? password) {
-    if (password != null && password.isNotEmpty && password != value) {
+    if (value == null || value.isEmpty) {
+      return 'Confirm password is required';
+    }
+    if (password != value) {
       return 'The passwords do not match.';
     }
     return null;
