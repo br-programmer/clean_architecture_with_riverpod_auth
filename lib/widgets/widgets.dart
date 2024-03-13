@@ -1,3 +1,1 @@
-export 'custom_button.dart';
-export 'custom_imput.dart';
-export 'custom_rich_text.dart';
+export 'flutter_masters_rich_text.dart';

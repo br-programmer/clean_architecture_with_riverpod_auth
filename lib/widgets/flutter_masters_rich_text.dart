@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 
 import '../extensions/extensions.dart';
 
-class CustomRichText extends StatelessWidget {
-  const CustomRichText({
+class FlutterMastersRichText extends StatelessWidget {
+  const FlutterMastersRichText({
     super.key,
     required this.onTap,
-    required this.firstText,
+    required this.text,
     required this.secondaryText,
   });
   final VoidCallback onTap;
-  final String firstText;
+  final String text;
   final String secondaryText;
 
   @override
@@ -19,7 +19,7 @@ class CustomRichText extends StatelessWidget {
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
-        text: '$firstText\n',
+        text: '$text\n',
         style: const TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w500,
