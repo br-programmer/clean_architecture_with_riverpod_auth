@@ -1,13 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../core/either.dart';
 import '../failures/failures.dart';
 
-class FirebaseService {
-  FirebaseService._();
+class AuthService {
+  AuthService({
+    required FirebaseAuth firebaseAuth,
+  }) : _firebaseAuth = firebaseAuth;
 
-  static final FirebaseService instance = FirebaseService._();
-
-  final _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseAuth _firebaseAuth;
 
   Future<AuthFailure?> signInWithEmailAndPassword({
     required String email,
@@ -18,9 +19,11 @@ class FirebaseService {
         email: email,
         password: password,
       );
-      if (credentials.user == null) {
+      final userId = credentials.user?.uid;
+      if (userId == null) {
         return UserNotFoundFailure();
       }
+
       return null;
     } on FirebaseAuthException catch (e) {
       return switch (e.code) {
@@ -36,7 +39,7 @@ class FirebaseService {
     }
   }
 
-  Future<AuthFailure?> createUserWithEmailAndPassword({
+  Future<Either<AuthFailure, String>> createUserWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
@@ -45,20 +48,27 @@ class FirebaseService {
         email: email,
         password: password,
       );
-      if (credentials.user == null) {
-        return CreateUserFailure();
+      final user = credentials.user;
+      if (user == null) {
+        return Left(
+          CreateUserFailure(),
+        );
       }
-      return null;
+      return Right(user.uid);
     } on FirebaseAuthException catch (e) {
-      return switch (e.code) {
-        'network-request-failed' => NetworkFailure(),
-        'email-already-in-use' => EmailExistFailure(),
-        'invalid-email' => InvalidEmailFailure(),
-        'weak-password' => WeakPasswordFailure(),
-        _ => UnknownFailure(),
-      };
+      return Left(
+        switch (e.code) {
+          'network-request-failed' => NetworkFailure(),
+          'email-already-in-use' => EmailExistFailure(),
+          'invalid-email' => InvalidEmailFailure(),
+          'weak-password' => WeakPasswordFailure(),
+          _ => UnknownFailure(),
+        },
+      );
     } catch (_) {
-      return UnknownFailure();
+      return Left(
+        UnknownFailure(),
+      );
     }
   }
 

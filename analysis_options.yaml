@@ -20,10 +20,10 @@ linter:
     one_member_abstracts: false
     prefer_constructors_over_static_methods: false
     prefer_relative_imports: true
+    sort_constructors_first: true
 
 analyzer:
   errors:
-    unused_import: error
     invalid_annotation_target: ignore
     avoid_renaming_method_parameters: ignore
     type_annotate_public_apis: ignore

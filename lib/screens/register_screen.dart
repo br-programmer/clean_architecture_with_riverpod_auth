@@ -37,15 +37,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (!mounted) {
       return;
     }
-    if (failure != null) {
-      final errorData = failure.errorData;
-      CustomDialog.show(
-        context,
-        title: errorData.message,
-        icon: errorData.icon,
-      );
-      return;
-    }
+    final errorData = failure.errorData;
+    CustomDialog.show(
+      context,
+      title: errorData.message,
+      icon: errorData.icon,
+    );
+    return;
     context.pushReplacementNamed(HomeScreen.route);
   }
 
